@@ -1,0 +1,358 @@
+#!/bin/bash
+#------------------------------------------------------------------------------#
+# vi: set sw=4 ts=4 ai:                            ("set modeline" in ~/.exrc) #
+#------------------------------------------------------------------------------#
+# Program      : git.vi                                                        #
+#                                                                              #
+# Author       : Ton Kersten                        Groesbeek, The Netherlands #
+#                                                                              #
+# Date         : 23-01-2009                                       Time : 12:18 #
+#                                                                              #
+# Description  : Program to edit files and commit them to git                  #
+#                                                                              #
+# Parameters   : The files                                                     #
+#                                                                              #
+# Pre reqs     : Git should be installed, working and in your path             #
+#                                                                              #
+# Exit codes   :    0 -> OK                                                    #
+#                <> 0 -> !OK                                                   #
+#                                                                              #
+# Updates      : None (yet)                                                    #
+#------------------------------------------------------------------------------#
+#             (c) Copyright 2009 by AT Computing, The Netherlands              #
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+#                    V e r s i o n   i n f o r m a t i o n                     #
+#------------------------------------------------------------------------------#
+# $Id:: git.vi 27 2010-09-24 08:00:03 tonk                                  $: #
+# $Revision:: 27                                                            $: #
+# $Author:: Ton Kersten <Ton.Kersten@SIDN.nl>                               $: #
+# $Date:: 2010-09-24 08:00:03 +0200 (Fri, 24 Sep 2010)                      $: #
+# $Hash::                                                                   $: #
+#------------------------------------------------------------------------------#
+#             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+# Determine the program name and the 'running directory'                       #
+#------------------------------------------------------------------------------#
+IAM="${0##*/}"
+CRD="$( [[ "$(printf "${0}" | cut -c 1 )" = "." ]] &&
+	{	printf "${PWD}/${0}"
+	} || {
+		printf "${0}"
+	})"
+CRD="${CRD%/*}"
+CUR="${PWD}"
+
+#------------------------------------------------------------------------------#
+# Save the shell settings                                                      #
+#------------------------------------------------------------------------------#
+SETA=0; [[ ${-} = *a* ]] && SETA=1
+SETE=0; [[ ${-} = *e* ]] && SETE=1
+SETU=0; [[ ${-} = *u* ]] && SETU=1
+SETX=0; [[ ${-} = *x* ]] && SETX=1
+
+#------------------------------------------------------------------------------#
+# Set and unset the needed shell settings                                      #
+#------------------------------------------------------------------------------#
+set +o noclobber			# Overwrite existing files, if needed              #
+set -o nounset				# Don't allow uninitialized variables              #
+set +o errexit				# No returncode checking                           #
+
+
+#============================== Function "Usage" ==============================#
+Usage()
+{
+	#+-------------------------------------------------------------------------#
+	# Function     : Usage                                                     #
+	#                                                                          #
+	# Description  : Display the syntax of this program                        #
+	#                                                                          #
+	# Parameters   : None                                                      #
+	#                                                                          #
+	# Returns      : Exits with RC = 1                                         #
+	#-------------------------------------------------------------------------+#
+	T="	"
+
+	cat <<- @EOF
+		vi and git combiner editor
+
+		Usage: ${IAM} [-h] [-a] [-m "message"] file <file> ...
+
+		Options:
+		${T}-h  Display this message
+
+		${T}-a  All files will be committed with the same commit message.
+		${T}    This message is the first file to be edited.
+
+		${T}-m  All files will be committed with the same commit message.
+		${T}    This message should be supplied on the command line.
+
+		This program works best when used with git filters, such as the
+		'git-edit' filter.
+
+		See my blog on how to use this (http://tonkersten.com)
+
+		${T}Examples:
+		${T}${T}${IAM} -m "Changed the version number" *.cfg
+		${T}or
+		${T}${T}${IAM} -a *.cfg
+
+		If both the '-m' and '-a' option are given, the '-m' has precedence.
+
+	@EOF
+	exit 1
+}
+#========================== End of function "Usage" ===========================#
+
+
+#------------------------------------------------------------------------------#
+# No git, no glory                                                             #
+#------------------------------------------------------------------------------#
+[[ x"$(which git 2>/dev/null)" = x"" ]] &&
+{	echo "No 'git' found. Please use plain vi(m)"
+	exit 1
+}
+spc="$(printf "%80s" "")"
+
+#------------------------------------------------------------------------------#
+# Who are we                                                                   #
+#------------------------------------------------------------------------------#
+who=${SUDO_USER:-${LOGNAME}}
+
+#------------------------------------------------------------------------------#
+# Set the TEMP dir                                                             #
+#------------------------------------------------------------------------------#
+export TMP=${TMPDIR:-/tmp}
+
+#------------------------------------------------------------------------------#
+# Try to get the user and email info from git                                  #
+#------------------------------------------------------------------------------#
+if [[ -f  ${HOME}/.gitconfig ]]
+then
+	full=$( git config -f ${HOME}/.gitconfig --get user.name)
+	email=$(git config -f ${HOME}/.gitconfig --get user.email)
+fi
+
+#------------------------------------------------------------------------------#
+# If no info was found, make up your own                                       #
+#------------------------------------------------------------------------------#
+if [[ x"${full:-}" = x"" ]]
+then
+	full=$(getent passwd ${who} | awk -F: '{ gsub(/,*/, ""); print $5 }')
+	email="${who}@TonKersten.com"
+fi
+author="${full} <${email}>"
+
+#------------------------------------------------------------------------------#
+# Get the commandline options                                                  #
+#------------------------------------------------------------------------------#
+options=":ham:"
+commitall=0
+cmtmsg=""
+while getopts ${options} opts
+do
+	case "${opts}"
+	in
+		a)
+			#------------------------------------------------------------------#
+			# Commit all files with the same commit message (With editor)      #
+			#------------------------------------------------------------------#
+			commitall=1
+			;;
+
+		m)
+			#------------------------------------------------------------------#
+			# Commit all files with the same commit message (Without editor)   #
+			#------------------------------------------------------------------#
+			cmtmsg="${OPTARG}"
+			;;
+
+		h)
+			#------------------------------------------------------------------#
+			# Display help                                                     #
+			#------------------------------------------------------------------#
+			Usage
+			exit ${OK}
+			;;
+
+		*)
+			#------------------------------------------------------------------#
+			# Display the usage                                                #
+			#------------------------------------------------------------------#
+			Usage
+			exit 1
+	esac
+done
+[[ x"${cmtmsg}" != x"" ]] && commitall=0
+
+#------------------------------------------------------------------------------#
+# Shift away processed options                                                 #
+#------------------------------------------------------------------------------#
+shift $(( ${OPTIND} - 1 ))
+
+#------------------------------------------------------------------------------#
+# Do we have files on the command line? If not, it's no use                    #
+#------------------------------------------------------------------------------#
+[[ x"${@:-}" = x"" ]] && Usage
+
+#------------------------------------------------------------------------------#
+# If all files should have the same commitmessage, create it now               #
+#------------------------------------------------------------------------------#
+if [[ ${commitall} = 1 ]]
+then
+	commitfile="${TMP}/${IAM}_commit.${$}"
+	cat <<- @EOF > ${commitfile}
+
+		# This file is the general commit file for ${IAM}
+		# Please type the general commit text for all files.
+		#
+		# Comment lines starting with '#' will not be included.
+		#
+		# Affected files: ${@}
+	@EOF
+	${EDITOR:-/usr/bin/vi} ${commitfile}
+fi
+
+
+#------------------------------------------------------------------------------#
+# Proces all files                                                             #
+#------------------------------------------------------------------------------#
+automsg="Automatic initial checkin by '${IAM}'"
+for file in "${@}"
+do
+	dir="$(dirname "${file}")"
+	cd "${dir}"
+	base="$(basename "${file}")"
+
+	[[ -d "${file}" ]] &&
+	{	echo "Cannot edit a directory" >&2
+		continue
+	}
+
+ 	#--------------------------------------------------------------------------#
+ 	# Check if this directory is part of a git tree. If not, create one        #
+ 	#--------------------------------------------------------------------------#
+	if [[ x"$(git rev-parse --git-dir 2>/dev/null)" = x"" ]]
+	then
+		#----------------------------------------------------------------------#
+		# Make a new one in ${PWD}                                             #
+		#----------------------------------------------------------------------#
+		git init || exit 1
+	fi
+	chmod +w "${base}" 2>/dev/null
+
+	#--------------------------------------------------------------------------#
+	# Determine the filetype and comment length                                #
+	#--------------------------------------------------------------------------#
+	GIT_LEN=66
+	case ${base}
+	in
+		*.c)	GIT_LEN=64	;;
+		*.h)	GIT_LEN=64	;;
+		*.go)	GIT_LEN=64	;;
+		*.js)	GIT_LEN=64	;;
+		*.pas)	GIT_LEN=64	;;
+		*.php)	GIT_LEN=64	;;
+	esac
+	export GIT_LEN
+
+	if ${EDITOR:-/usr/bin/vi} "${base}"
+	then
+		#----------------------------------------------------------------------#
+		# Did we put something usefull in it                                   #
+		#----------------------------------------------------------------------#
+		[[ ! -s "${base}" ]] && exit 0
+
+		#----------------------------------------------------------------------#
+		# Check if the file is already in git (grep for the filename)          #
+		#----------------------------------------------------------------------#
+		initial=0
+		ingit=$(git ls-files ${base} | wc -l)
+		[[ ${ingit} = 0 ]] &&
+		{	git add "${base}"
+			git commit --author "${author}" -m "${automsg}" "${base}"
+			initial=1
+		}
+
+		#----------------------------------------------------------------------#
+		# Find out which file rights are set                                   #
+		#----------------------------------------------------------------------#
+		rights=$(stat -c "%a" "${base}")
+
+		#----------------------------------------------------------------------#
+		# If we didn't make any changes, the repo and this one are the same    #
+		#----------------------------------------------------------------------#
+		diff=$(git diff "${base}" 2>&1)
+		[[ x"${diff}" = x"" ]] &&
+		{	if [[ ${initial} = 0 ]]
+			then
+				continue
+			fi
+		}
+		rm -f "${TMP}/${base}.bck"
+
+		#----------------------------------------------------------------------#
+		# Give the file a new version number (while we are at it)              #
+		#----------------------------------------------------------------------#
+		if [[ $(grep -c "[[:space:]]*\$[R]evision::.*\$:" "${base}") != 0 ]]
+		then
+			datim=$(stat -c"%y" "${base}" | cut -d '.' -f1)
+
+			newrev="$(awk '/[[:space:]]*\$[R]evision::/ { print $3; exit }' "${base}")"
+			[[ x"${newrev}" = x"\$:" ]] && newrev=0
+			newrev="$(( ${newrev} + 1 ))"
+
+			f="${base##*/} ${newrev} ${datim} ${who} ${spc}"
+			newrev="${newrev}${spc}"
+			nam="${author}${spc}"
+			now="$(date '+%F %T %z (%a, %d %b %Y)') ${spc}"
+
+			#------------------------------------------------------------------#
+			# Find out which file rights are set                               #
+			#------------------------------------------------------------------#
+			rights=$(stat -c "%a" "${base}")
+
+			L0=$(( ${GIT_LEN} + 0 ))
+			L1=$(( ${GIT_LEN} + 2 ))
+			L2=$(( ${GIT_LEN} - 2 ))
+			L3=$(( ${GIT_LEN} - 4 ))
+			cp "${base}" "${TMP}/${base}.bck"
+			sed 	-e 's!\([[:space:]]*\$[I]d::\).*\$:!\1 '"${f:0:${L1}}"'\$:!'			\
+					-e 's!\([[:space:]]*\$[R]evision::\).*\$:!\1 '"${newrev:0:${L3}}"'\$:!'	\
+					-e 's!\([[:space:]]*\$[A]uthor::\).*\$:!\1 '"${nam:0:${L2}}"'\$:!'		\
+					-e 's!\([[:space:]]*\$[D]ate::\).*\$:!\1 '"${now:0:${L0}}"'\$:!'		\
+			"${TMP}/${base}.bck" > "${base}"
+			chmod ${rights} "${base}"
+			rm -f "${TMP}/${base}.bck"
+		fi
+
+		#----------------------------------------------------------------------#
+		# Commit the file to git                                               #
+		#----------------------------------------------------------------------#
+		if [[ ${commitall} = 1 ]]
+		then
+			 grep -v "^[[:space:]]*#" ${commitfile} | \
+			 		git commit -F - --author "${author}" "${base}"
+		else
+			if [[ x"${cmtmsg}" = x"" ]]
+			then
+				git commit --author "${author}" "${base}"
+			else
+				git commit --author "${author}" -m "${cmtmsg}" "${base}"
+			fi
+		fi
+
+		#----------------------------------------------------------------------#
+		# And check it out again to apply the smudge filters                   #
+		#----------------------------------------------------------------------#
+		mv "${base}" "${TMP}/${base}.bck"
+		git checkout "${base}"
+		[[ -f "${base}" ]] && rm -f "${TMP}/${base}.bck" || mv "${TMP}/${base}.bck" "${base}"
+	fi
+
+	cd - >/dev/null 2>&1
+done
+[[ ${commitall} = 1 ]] && rm -f ${commitfile}
