@@ -1,0 +1,25 @@
+vi and git combiner editor
+
+Usage: git.vi [-h] [-a] [-m "message"] file <file> ...
+
+Options:
+	-h  Display this message
+
+	-a  All files will be committed with the same commit message.
+	    This message is the first file to be edited.
+
+	-m  All files will be committed with the same commit message.
+	    This message should be supplied on the command line.
+
+This program works best when used with git filters, such as the
+'git-edit' filter.
+
+See my blog on how to use this (http://tonkersten.com)
+
+	Examples:
+		git.vi -m "Changed the version number" *.cfg
+	or
+		git.vi -a *.cfg
+
+If both the '-m' and '-a' option are given, the '-m' has precedence.
+
