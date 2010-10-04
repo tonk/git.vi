@@ -26,4 +26,5 @@ id3=$(git show -s --pretty=format:"%h %ci ${who}")
 id="${id}${spc}"
 sed -e 's!\([[:space:]]*\$[H]ash::\).*\$:!\1 '"${id:0:${len}}"'\$:!'	\
 	-e 's!\([[:space:]]*\$[N]SId:\).*\$!\1 '"${id2}"'\$!'				\
+	-e 's!\([[:space:]]*\$[I]d:\).*\$!\1 '"${id2}"'\$!'					\
 	-e 's!\([[:space:]]*\$[Pp]uppet:\).*\$!\1 '"${id3}"'\$!'
