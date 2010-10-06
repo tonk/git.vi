@@ -21,10 +21,10 @@
 #------------------------------------------------------------------------------#
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
-# $Id:: git.vi 29 2010-10-05 15:13:36 tonk                                  $: #
-# $Revision:: 29                                                            $: #
+# $Id:: git.vi 30 2010-10-06 13:53:52 tonk                                  $: #
+# $Revision:: 30                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-10-05 15:13:36 +0200 (Tue, 05 Oct 2010)                      $: #
+# $Date:: 2010-10-06 13:53:53 +0200 (Wed, 06 Oct 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -244,6 +244,7 @@ do
 		git init || exit 1
 		GITTOP="$(pwd)"
 	fi
+	rights=$(stat -c "%a" "${base}")
 	chmod +w "${base}" 2>/dev/null
 
 	#--------------------------------------------------------------------------#
@@ -283,11 +284,6 @@ do
 			git commit --author "${author}" -m "${automsg}" "${base}"
 			initial=1
 		}
-
-		#----------------------------------------------------------------------#
-		# Find out which file rights are set                                   #
-		#----------------------------------------------------------------------#
-		rights=$(stat -c "%a" "${base}")
 
 		#----------------------------------------------------------------------#
 		# If we didn't make any changes, the repo and this one are the same    #
@@ -335,7 +331,6 @@ do
 					-e 's!\([[:space:]]*\$[D]ate::\).*\$:!\1 '"${now:0:${L0}}"'\$:!'		\
 					-e 's!\([[:space:]]*\$[F]name::\).*\$:!\1 '"${fname:0:${L4}}"'\$:!'		\
 			"${TMP}/${base}.bck" > "${base}"
-			chmod ${rights} "${base}"
 			rm -f "${TMP}/${base}.bck"
 		fi
 
@@ -362,6 +357,7 @@ do
 		git checkout "${base}"
 		[[ -f "${base}" ]] && rm -f "${TMP}/${base}.bck" || mv "${TMP}/${base}.bck" "${base}"
 	fi
+	chmod ${rights} "${base}"
 
 	cd - >/dev/null 2>&1
 done
