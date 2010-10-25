@@ -28,7 +28,7 @@ See my blog on how to use this (http://tonkersten.com)
 
 If both the '-m' and '-a' option are given, the '-m' has precedence.
 
-with "git config gitvi.umask 007" the umask for this development tree can be
+With "git config gitvi.umask 007" the umask for this development tree can be
 set. Of course it's possible to set another umask, this is just an example.
 
-# $Id:$
+# $Rev: 4764ca6 2010-10-25 09:33:59 +0200 (Ton Kersten)$
