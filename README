@@ -12,7 +12,12 @@ Options:
 	    This message should be supplied on the command line.
 
 This program works best when used with git filters, such as the
-'git-edit' filter.
+'gitvi' filter.
+
+In my ~/.gitconfig it says:
+	[filter "gitvi"]
+		smudge = /home/tonk/bin/git/git.expand
+		clean = /home/tonk/bin/git/git.collapse
 
 See my blog on how to use this (http://tonkersten.com)
 
