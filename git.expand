@@ -18,7 +18,7 @@ len="${GIT_LEN:-66}"
 spc="$(printf "%80s" "")"
 who=${SUDO_USER:-${LOGNAME}}
 
-id1=$( git show -s --pretty=format:"%H (${who})")
+id1=$(git show -s --pretty=format:"%H (${who})")
 id2=$(git show -s --pretty=format:"%h %ci (%an)")
 id3=$(git show -s --pretty=format:"%h %ci ${who}")
 
@@ -26,6 +26,6 @@ id1s="${id1}${spc}"
 id2s="${id2}${spc}"
 id3s="${id2}${spc}"
 sed -e 's!\([[:space:]]*\$[H]ash::\).*\$:!\1 '"${id1s:0:${len}}"'\$:!'	\
-	-e 's!\([[:space:]]*\$[R]ev\).*\$!\1 '"${id2}"' \$!'				\
-	-e 's!\([[:space:]]*\$[N]SId\).*\$!\1 '"${id2}"' \$!'				\
-	-e 's!\([[:space:]]*\$[Pp]uppet\).*\$!\1 '"${id3}"' \$!'
+	-e 's!\([[:space:]]*\$[R]ev\).*\$!\1: '"${id2}"' \$!'				\
+	-e 's!\([[:space:]]*\$[N]SId\).*\$!\1: '"${id2}"' \$!'				\
+	-e 's!\([[:space:]]*\$[Pp]uppet\).*\$!\1: '"${id3}"' \$!'
