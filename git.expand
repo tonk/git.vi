@@ -7,9 +7,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: bee7266 2010-10-25 15:54:13 +0200 (Ton Kersten)                      $: #
-# $Revision:: 1                                                             $: #
+# $Revision:: 2                                                             $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-10-26 11:43:13 +0200 (Tue, 26 Oct 2010)                      $: #
+# $Date:: 2010-11-01 09:48:38 +0100 (Mon, 01 Nov 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -21,12 +21,12 @@ who=${SUDO_USER:-${LOGNAME}}
 
 id1=$(git show -s --pretty=format:"%H (${who})")
 id2=$(git show -s --pretty=format:"%h %ci (%an)")
-id3=$(git show -s --pretty=format:"%h %ci ${who}")
+id3=$(git show -s --pretty=format:"%h @%ct %aN%n")
 
 id1s="${id1}${spc}"
 id2s="${id2}${spc}"
-id3s="${id2}${spc}"
+id3s="${id3}${spc}"
 sed -e 's!\([[:space:]]*\$[H]ash::\).*\$:!\1 '"${id1s:0:${len}}"'\$:!'	\
 	-e 's!\([[:space:]]*\$[R]ev[^i]\).*\$!\1: '"${id2}"' \$!'			\
 	-e 's!\([[:space:]]*\$[N]SId\).*\$!\1: '"${id2}"' \$!'				\
-	-e 's!\([[:space:]]*\$[Pp]uppet\).*\$!\1: '"${id3}"' \$!'
+	-e 's!\([[:space:]]*\$[Pp]uppet\).*\$!\1: '"${GIT_FNAME} - ${id3}"' \$!'
