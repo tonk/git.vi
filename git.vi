@@ -22,9 +22,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $: #
-# $Revision:: 37                                                            $: #
+# $Revision:: 38                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-11-02 13:30:16 +0100 (Tue, 02 Nov 2010)                      $: #
+# $Date:: 2010-11-02 14:07:49 +0100 (Tue, 02 Nov 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -225,14 +225,19 @@ automsg="Automatic initial checkin by '${IAM}'"
 for file in "${@}"
 do
 	dir="$(dirname "${file}")"
-	cd "${dir}"
 	base="$(basename "${file}")"
 
+	[[ ! -d "${dir}" ]] &&
+	{	echo "Cannot change to a non existing directory" >&2
+		cd - >/dev/null 2>&1
+		continue
+	}
 	[[ -d "${file}" ]] &&
 	{	echo "Cannot edit a directory" >&2
 		cd - >/dev/null 2>&1
 		continue
 	}
+	cd "${dir}"
 
  	#--------------------------------------------------------------------------#
  	# Find the top of the git tree                                             #
