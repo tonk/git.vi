@@ -22,9 +22,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $: #
-# $Revision:: 35                                                            $: #
+# $Revision:: 36                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-11-01 09:47:58 +0100 (Mon, 01 Nov 2010)                      $: #
+# $Date:: 2010-11-02 10:44:24 +0100 (Tue, 02 Nov 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -309,6 +309,7 @@ do
 		[[ x"${diff}" = x"" ]] &&
 		{	if [[ ${initial} = 0 ]]
 			then
+				cd - >/dev/null 2>&1
 				continue
 			fi
 		}
