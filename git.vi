@@ -197,9 +197,9 @@ shift $(( ${OPTIND} - 1 ))
 #------------------------------------------------------------------------------#
 # If all files should have the same commitmessage, create it now               #
 #------------------------------------------------------------------------------#
+commitfile="${TMP}/${IAM}_commit.${$}"
 if [[ ${commitall} = 1 ]]
 then
-	commitfile="${TMP}/${IAM}_commit.${$}"
 	cat <<- @EOF > ${commitfile}
 
 		# This file is the general commit file for ${IAM}
@@ -230,6 +230,7 @@ do
 
 	[[ -d "${file}" ]] &&
 	{	echo "Cannot edit a directory" >&2
+		cd - >/dev/null 2>&1
 		continue
 	}
 
@@ -357,12 +358,38 @@ do
 		#----------------------------------------------------------------------#
 		if [[ ${commitall} = 1 ]]
 		then
-			 grep -v "^[[:space:]]*#" ${commitfile} | \
-			 		git commit -F - --author "${author}" "${base}"
+			cl=$(grep -v '^[[:space:]]*#' ${commitfile} | grep -v '^[[:space:]]*$' | wc -l)
+			[[ ${cl} = 0 ]] &&
+			{	echo "Cannot continue with an empty commit message!" >&2
+				cd - >/dev/null 2>&1
+				continue
+			}
+			grep -v '^[[:space:]]*#' ${commitfile}	| \
+			 	git commit -F - --author "${author}" "${base}"
 		else
 			if [[ x"${cmtmsg}" = x"" ]]
 			then
-				git commit --author "${author}" "${base}"
+				cat <<- @EOF > ${commitfile}
+
+					# Please enter the commit message for your changes. Lines starting
+					# with '#' will be ignored, and an empty message aborts the commit.
+					#
+					# Changes to be committed:
+					#   (use "git rm --cached <file>..." to unstage)
+					#
+					# Affected files: ${@}
+					#
+				@EOF
+				${EDITOR:-/usr/bin/vi} ${commitfile}
+
+				cl=$(grep -v '^[[:space:]]*#' ${commitfile} | grep -v '^[[:space:]]*$' | wc -l)
+				[[ ${cl} = 0 ]] &&
+				{	echo "Cannot continue with an empty commit message!" >&2
+					cd - >/dev/null 2>&1
+					continue
+				}
+				grep -v '^[[:space:]]*#' ${commitfile}	| \
+					git commit -F - --author "${author}" "${base}"
 			else
 				git commit --author "${author}" -m "${cmtmsg}" "${base}"
 			fi
