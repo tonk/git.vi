@@ -22,9 +22,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $: #
-# $Revision:: 36                                                            $: #
+# $Revision:: 37                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-11-02 10:44:24 +0100 (Tue, 02 Nov 2010)                      $: #
+# $Date:: 2010-11-02 13:30:16 +0100 (Tue, 02 Nov 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -406,4 +406,4 @@ do
 
 	cd - >/dev/null 2>&1
 done
-[[ ${commitall} = 1 ]] && rm -f ${commitfile}
+[[ -f ${commitfile} ]] && rm -f ${commitfile}
