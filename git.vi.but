@@ -1,0 +1,96 @@
+\#{------------------------------------------------------------------------------#}
+\#{                    V e r s i o n   i n f o r m a t i o n                     #}
+\#{------------------------------------------------------------------------------#}
+\#{ $Id::                                                                     $: #}
+\#{ $Revision::                                                               $: #}
+\#{ $Author::                                                                 $: #}
+\#{ $Date::                                                                   $: #}
+\#{ $Hash::                                                                   $: #}
+\#{------------------------------------------------------------------------------#}
+\#{             E n d   o f   v e r s i o n   i n f o r m a t i o n              #}
+\#{------------------------------------------------------------------------------#}
+
+\cfg{man-identity}{git.vi}{1}{The git and vi wrapper}{}{}
+\cfg{man-mindepth}{1}
+
+\A{manpage}The "\cw{git.vi}" \cw{man} page
+
+\H{manpage-name}NAME
+
+\cw{git.vi} - The git and vi wrapper
+
+\H{manpage-synopsis}SYNOPSIS
+
+git.vi [-m msg] [-a] file...
+
+\H{manpage-description}DESCRIPTION
+
+Edit files and commit them to a git repository. If no \cw{FILE} argument is
+given nothing is done.  \cw{git.vi} assumes to be working in a git repository.
+It will create a new repository if this isn't the case.
+
+When committed to the git repository the file is removed and checked out again.
+This last step is needed to perform the git filtering.
+
+\dt \c{-a}
+
+\dd The first file edited is the commit message for the rest of the files.
+If both the \cw{-m} and \cw{-a} option are given, the \cw{-m} option
+has precedence.
+
+\dt \c{-m} mesg
+
+\dd The commit message \cw{mesg} will be used for all the edited files.
+
+\cw{git.vi} expands the following strings (Regular expressions):
+
+\dt \c{$Id::.*$:}
+
+\dd Example: $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $:
+
+\dt \c{$Revision::.*$:}
+
+\dd Example: $Revision:: 38                                                            $:
+
+\dt \c{$Author::.*$:}
+
+\dd Example: $Author:: Ton Kersten <tonk@tonkersten.com>                               $:
+
+\dt \c{$Date::.*$:}
+
+\dd Example: $Date:: 2010-11-02 14:07:49 +0100 (Tue, 02 Nov 2010)                      $:
+
+\dt \c{$Fname::.*$:}
+
+\dd Test
+
+\dt \c{$Hash::                                                                   $:}
+
+\dd Example: $Hash::                                                                   $:
+
+\dt \c{$NSId$}
+
+\dd Example: $NSId$
+
+\dt \c{$[Pp]uppet.*$}
+
+\dd Example: $Puppet$
+
+This strings are the same as generated with the \cw{header} command,
+also available at this site.
+
+\H{manpage-author}AUTHOR
+
+Ton Kersten
+
+\H{manpage-license}LICENSE
+
+Licensed under the GPL version 3. Copyright (c) Ton Kersten 2009
+
+\H{manpage-seealso}SEE ALSO
+
+vim(1), git(1), header.
+
+\H{manpage-bugs}KNOWN BUGS / HIDDEN FEATURES
+
+None that I know of. If you find any, please let me know.
