@@ -1,10 +1,10 @@
 \#{------------------------------------------------------------------------------#}
 \#{                    V e r s i o n   i n f o r m a t i o n                     #}
 \#{------------------------------------------------------------------------------#}
-\#{ $Id::                                                                     $: #}
-\#{ $Revision::                                                               $: #}
-\#{ $Author::                                                                 $: #}
-\#{ $Date::                                                                   $: #}
+\#{ $Id:: git.vi.but 1 2010-11-04 13:01:04 tonk                               $: #}
+\#{ $Revision:: 1                                                             $: #}
+\#{ $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #}
+\#{ $Date:: 2010-11-09 11:04:47 +0100 (Tue, 09 Nov 2010)                      $: #}
 \#{ $Hash::                                                                   $: #}
 \#{------------------------------------------------------------------------------#}
 \#{             E n d   o f   v e r s i o n   i n f o r m a t i o n              #}
@@ -44,23 +44,23 @@ has precedence.
 
 \cw{git.vi} expands the following strings (Regular expressions):
 
-\dt \c{$Id::.*$:}
+\dt \c{$Id:: git.vi.but 1 2010-11-04 13:01:04 tonk                               $:}
 
 \dd Example: $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $:
 
-\dt \c{$Revision::.*$:}
+\dt \c{$Revision:: 1                                                             $:}
 
-\dd Example: $Revision:: 38                                                            $:
+\dd Example: $Revision:: 1                                                             $:
 
-\dt \c{$Author::.*$:}
+\dt \c{$Author:: Ton Kersten <tonk@tonkersten.com>                               $:}
 
 \dd Example: $Author:: Ton Kersten <tonk@tonkersten.com>                               $:
 
-\dt \c{$Date::.*$:}
+\dt \c{$Date:: 2010-11-09 11:04:47 +0100 (Tue, 09 Nov 2010)                      $:}
 
-\dd Example: $Date:: 2010-11-02 14:07:49 +0100 (Tue, 02 Nov 2010)                      $:
+\dd Example: $Date:: 2010-11-09 11:04:47 +0100 (Tue, 09 Nov 2010)                      $:
 
-\dt \c{$Fname::.*$:}
+\dt \c{$Fname:: .../git.vi.but                                                   $:}
 
 \dd Test
 
