@@ -31,4 +31,9 @@ If both the '-m' and '-a' option are given, the '-m' has precedence.
 With "git config gitvi.umask 007" the umask for this development tree can be
 set. Of course it's possible to set another umask, this is just an example.
 
-# $Rev$
+These git config variables are used:
+	gitvi.owner
+	gitvi.group
+	gitvi.umask
+
+# $Rev: 3487d34 2010-10-26 11:29:10 +0200 (Ton Kersten) $
