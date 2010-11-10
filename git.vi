@@ -22,9 +22,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $: #
-# $Revision:: 39                                                            $: #
+# $Revision:: 40                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-11-10 11:14:44 +0100 (Wed, 10 Nov 2010)                      $: #
+# $Date:: 2010-11-10 11:22:51 +0100 (Wed, 10 Nov 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -219,9 +219,10 @@ gitowner=$(git config gitvi.owner)
 gitgroup=$(git config gitvi.group)
 gitumask=$(git config gitvi.umask)
 
-[[ x"${gitowner}"  = x"" ]] && gitowner="${USER}"
-[[ x"${gitgroup}"  = x"" ]] && gitgroup="$(id -g)"
-[[ x"${gitumask}" != x"" ]] && umask ${gitumask}
+[[ x"${gitowner}" = x"" ]] && gitowner="${USER}"
+[[ x"${gitgroup}" = x"" ]] && gitgroup="$(id -g)"
+[[ x"${gitumask}" = x"" ]] && gitumask="$(umask)"
+umask ${gitumask}
 
 #------------------------------------------------------------------------------#
 # Proces all files                                                             #
@@ -269,7 +270,7 @@ do
 		rights=$(stat -c "%a" "${base}")
 		chmod +w "${base}" 2>/dev/null
 	else
-		rights="600"
+		rights=$(( 666 - ${gitumask} ))
 	fi
 
 	#--------------------------------------------------------------------------#
@@ -344,10 +345,8 @@ do
 			now="$(date '+%F %T %z (%a, %d %b %Y)') ${spc}"
 
 			#------------------------------------------------------------------#
-			# Find out which file rights are set                               #
+			# Prepare the header strings                                       #
 			#------------------------------------------------------------------#
-			rights=$(stat -c "%a" "${base}")
-
 			L0=$(( ${GIT_LEN} + 0 ))
 			L1=$(( ${GIT_LEN} + 2 ))
 			L2=$(( ${GIT_LEN} - 2 ))
