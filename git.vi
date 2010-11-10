@@ -22,9 +22,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $: #
-# $Revision:: 38                                                            $: #
+# $Revision:: 39                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-11-02 14:07:49 +0100 (Tue, 02 Nov 2010)                      $: #
+# $Date:: 2010-11-10 11:14:44 +0100 (Wed, 10 Nov 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -215,8 +215,13 @@ fi
 #------------------------------------------------------------------------------#
 # Do we have a umask configured. If so, set it                                 #
 #------------------------------------------------------------------------------#
-gitmask=$(git config gitvi.umask)
-[[ x"${gitmask}" != x"" ]] && umask ${gitmask}
+gitowner=$(git config gitvi.owner)
+gitgroup=$(git config gitvi.group)
+gitumask=$(git config gitvi.umask)
+
+[[ x"${gitowner}"  = x"" ]] && gitowner="${USER}"
+[[ x"${gitgroup}"  = x"" ]] && gitgroup="$(id -g)"
+[[ x"${gitumask}" != x"" ]] && umask ${gitumask}
 
 #------------------------------------------------------------------------------#
 # Proces all files                                                             #
@@ -407,7 +412,9 @@ do
 		git checkout "${base}"
 		[[ -f "${base}" ]] && rm -f "${TMP}/${base}.bck" || mv "${TMP}/${base}.bck" "${base}"
 	fi
-	chmod ${rights} "${base}"
+	chown ${gitowner} "${base}" > /dev/null 2>&1
+	chgrp ${gitgroup} "${base}" > /dev/null 2>&1
+	chmod ${rights}   "${base}" > /dev/null 2>&1
 
 	cd - >/dev/null 2>&1
 done
