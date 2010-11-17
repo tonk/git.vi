@@ -22,9 +22,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $: #
-# $Revision:: 41                                                            $: #
+# $Revision:: 42                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-11-17 08:23:27 +0100 (Wed, 17 Nov 2010)                      $: #
+# $Date:: 2010-11-17 08:32:09 +0100 (Wed, 17 Nov 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -218,7 +218,7 @@ fi
 gitowner=$(git config gitvi.owner)
 gitgroup=$(git config gitvi.group)
 gitumask=$(git config gitvi.umask)
-gitumask=$(git config gitvi.lang)
+gitlang=$( git config gitvi.lang)
 
 [[ x"${gitowner}" = x"" ]] && gitowner="${USER}"
 [[ x"${gitgroup}" = x"" ]] && gitgroup="$(id -g)"
