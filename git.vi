@@ -22,9 +22,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $: #
-# $Revision:: 40                                                            $: #
+# $Revision:: 41                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-11-10 11:22:51 +0100 (Wed, 10 Nov 2010)                      $: #
+# $Date:: 2010-11-17 08:23:27 +0100 (Wed, 17 Nov 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -218,16 +218,28 @@ fi
 gitowner=$(git config gitvi.owner)
 gitgroup=$(git config gitvi.group)
 gitumask=$(git config gitvi.umask)
+gitumask=$(git config gitvi.lang)
 
 [[ x"${gitowner}" = x"" ]] && gitowner="${USER}"
 [[ x"${gitgroup}" = x"" ]] && gitgroup="$(id -g)"
 [[ x"${gitumask}" = x"" ]] && gitumask="$(umask)"
+[[ x"${gitlang}"  = x"" ]] && gitlang="en"
 umask ${gitumask}
 
 #------------------------------------------------------------------------------#
 # Proces all files                                                             #
 #------------------------------------------------------------------------------#
-automsg="Automatic initial checkin by '${IAM}'"
+case "${gitlang}"
+in
+	en)	automsg="Automatic checkin by '${IAM}'"
+		;;
+
+	nl)	automsg="Automatische checkin door '${IAM}'"
+		;;
+	*)	automsg="Automatic checkin by '${IAM}'"
+		;;
+esac
+
 for file in "${@}"
 do
 	dir="$(dirname "${file}")"
@@ -304,7 +316,7 @@ do
 		[[ ! -s "${base}" ]] && exit 0
 
 		#----------------------------------------------------------------------#
-		# Check if the file is already in git (grep for the filename)          #
+		# Check if the file is already in git                                  #
 		#----------------------------------------------------------------------#
 		initial=0
 		ingit=$(git ls-files ${base} | wc -l)
