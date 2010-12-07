@@ -22,9 +22,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $: #
-# $Revision:: 43                                                            $: #
+# $Revision:: 44                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-12-02 14:22:37 +0100 (Thu, 02 Dec 2010)                      $: #
+# $Date:: 2010-12-07 08:29:02 +0100 (Tue, 07 Dec 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -289,6 +289,7 @@ do
 	# Create a nice filename                                                   #
 	#--------------------------------------------------------------------------#
 	GIT_FNAME="$(echo "$(pwd)/${base}" | sed -e "s!^${GIT_TOP}!.../!" -e "s!//!/!g")"
+	GIT_FNAME="$(hostname -s):${GIT_FNAME}"
 
 	#--------------------------------------------------------------------------#
 	# Determine the filetype and comment length                                #
