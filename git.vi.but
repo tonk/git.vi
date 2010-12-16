@@ -1,10 +1,10 @@
 \#{------------------------------------------------------------------------------#}
 \#{                    V e r s i o n   i n f o r m a t i o n                     #}
 \#{------------------------------------------------------------------------------#}
-\#{ $Id:: git.vi.but 1 2010-11-04 13:01:04 tonk                               $: #}
-\#{ $Revision:: 1                                                             $: #}
+\#{ $Id:: git.vi.but 2 2010-12-16 13:07:31 tonk                               $: #}
+\#{ $Revision:: 2                                                             $: #}
 \#{ $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #}
-\#{ $Date:: 2010-11-09 11:04:47 +0100 (Tue, 09 Nov 2010)                      $: #}
+\#{ $Date:: 2010-12-16 13:07:31 +0100 (Thu, 16 Dec 2010)                      $: #}
 \#{ $Hash::                                                                   $: #}
 \#{------------------------------------------------------------------------------#}
 \#{             E n d   o f   v e r s i o n   i n f o r m a t i o n              #}
@@ -21,7 +21,7 @@
 
 \H{manpage-synopsis}SYNOPSIS
 
-git.vi [-m msg] [-a] file...
+git.vi [-h] [-a] [-m "msg"] [-e] file...
 
 \H{manpage-description}DESCRIPTION
 
@@ -38,29 +38,34 @@ This last step is needed to perform the git filtering.
 If both the \cw{-m} and \cw{-a} option are given, the \cw{-m} option
 has precedence.
 
+\dt \c{-e}
+
+\dd Do not start an editor for the files. This is usefull for
+automatic checkins and will mostly be used with the \cw{-m} option.
+
 \dt \c{-m} mesg
 
 \dd The commit message \cw{mesg} will be used for all the edited files.
 
 \cw{git.vi} expands the following strings (Regular expressions):
 
-\dt \c{$Id:: git.vi.but 1 2010-11-04 13:01:04 tonk                               $:}
+\dt \c{$Id:: git.vi.but 2 2010-12-16 13:07:31 tonk                               $:}
 
 \dd Example: $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $:
 
-\dt \c{$Revision:: 1                                                             $:}
+\dt \c{$Revision:: 2                                                             $:}
 
-\dd Example: $Revision:: 1                                                             $:
+\dd Example: $Revision:: 2                                                             $:
 
 \dt \c{$Author:: Ton Kersten <tonk@tonkersten.com>                               $:}
 
 \dd Example: $Author:: Ton Kersten <tonk@tonkersten.com>                               $:
 
-\dt \c{$Date:: 2010-11-09 11:04:47 +0100 (Tue, 09 Nov 2010)                      $:}
+\dt \c{$Date:: 2010-12-16 13:07:31 +0100 (Thu, 16 Dec 2010)                      $:}
 
-\dd Example: $Date:: 2010-11-09 11:04:47 +0100 (Tue, 09 Nov 2010)                      $:
+\dd Example: $Date:: 2010-12-16 13:07:31 +0100 (Thu, 16 Dec 2010)                      $:
 
-\dt \c{$Fname:: .../git.vi.but                                                   $:}
+\dt \c{$Fname:: vmware:.../git.vi.but                                            $:}
 
 \dd Test
 
@@ -85,7 +90,7 @@ Ton Kersten
 
 \H{manpage-license}LICENSE
 
-Licensed under the GPL version 3. Copyright (c) Ton Kersten 2009
+Licensed under the GPL version 3. Copyright (c) Ton Kersten 2009-2011
 
 \H{manpage-seealso}SEE ALSO
 
