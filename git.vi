@@ -22,9 +22,9 @@
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
 # $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $: #
-# $Revision:: 44                                                            $: #
+# $Revision:: 45                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2010-12-07 08:29:02 +0100 (Tue, 07 Dec 2010)                      $: #
+# $Date:: 2010-12-16 13:08:12 +0100 (Thu, 16 Dec 2010)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -75,7 +75,7 @@ Usage()
 	cat <<- @EOF
 		vi and git combiner editor
 
-		Usage: ${IAM} [-h] [-a] [-m "message"] file <file> ...
+		Usage: ${IAM} [-h] [-a] [-m "message"] [-e] file <file> ...
 
 		Options:
 		${T}-h  Display this message
@@ -85,6 +85,9 @@ Usage()
 
 		${T}-m  All files will be committed with the same commit message.
 		${T}    This message should be supplied on the command line.
+
+		${T}-e  Do not edit the file(s).
+		${T}    This is very usefull for automatic checkins
 
 		This program works best when used with git filters, such as the
 		'git-edit' filter.
@@ -145,9 +148,10 @@ author="${full} <${email}>"
 #------------------------------------------------------------------------------#
 # Get the commandline options                                                  #
 #------------------------------------------------------------------------------#
-options=":ham:"
+options=":haem:"
 commitall=0
 cmtmsg=""
+editit=1
 while getopts ${options} opts
 do
 	case "${opts}"
@@ -164,6 +168,13 @@ do
 			# Commit all files with the same commit message (Without editor)   #
 			#------------------------------------------------------------------#
 			cmtmsg="${OPTARG}"
+			;;
+
+		e)
+			#------------------------------------------------------------------#
+			# Edit it, or just continue                                        #
+			#------------------------------------------------------------------#
+			editit=0
 			;;
 
 		h)
@@ -309,8 +320,11 @@ do
 	#--------------------------------------------------------------------------#
 	# Edit the file                                                            #
 	#--------------------------------------------------------------------------#
-	if ${EDITOR:-/usr/bin/vi} "${base}"
-	then
+		if [[ ${editit} = 1 ]]
+		then
+			${EDITOR:-/usr/bin/vi} "${base}"
+		fi
+
 		#----------------------------------------------------------------------#
 		# Did we put something usefull in it                                   #
 		#----------------------------------------------------------------------#
@@ -423,7 +437,6 @@ do
 		mv "${base}" "${TMP}/${base}.bck"
 		git checkout "${base}"
 		[[ -f "${base}" ]] && rm -f "${TMP}/${base}.bck" || mv "${TMP}/${base}.bck" "${base}"
-	fi
 	chown ${gitowner} "${base}" > /dev/null 2>&1
 	chgrp ${gitgroup} "${base}" > /dev/null 2>&1
 	chmod ${rights}   "${base}" > /dev/null 2>&1
