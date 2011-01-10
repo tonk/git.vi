@@ -1,10 +1,10 @@
 \#{------------------------------------------------------------------------------#}
 \#{                    V e r s i o n   i n f o r m a t i o n                     #}
 \#{------------------------------------------------------------------------------#}
-\#{ $Id:: git.vi.but 2 2010-12-16 13:07:31 tonk                               $: #}
-\#{ $Revision:: 2                                                             $: #}
+\#{ $Id:: git.vi.but 3 2011-01-10 13:11:48 tonk                               $: #}
+\#{ $Revision:: 3                                                             $: #}
 \#{ $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #}
-\#{ $Date:: 2010-12-16 13:07:31 +0100 (Thu, 16 Dec 2010)                      $: #}
+\#{ $Date:: 2011-01-10 13:12:26 +0100 (Mon, 10 Jan 2011)                      $: #}
 \#{ $Hash::                                                                   $: #}
 \#{------------------------------------------------------------------------------#}
 \#{             E n d   o f   v e r s i o n   i n f o r m a t i o n              #}
@@ -49,21 +49,21 @@ automatic checkins and will mostly be used with the \cw{-m} option.
 
 \cw{git.vi} expands the following strings (Regular expressions):
 
-\dt \c{$Id:: git.vi.but 2 2010-12-16 13:07:31 tonk                               $:}
+\dt \c{$Id:: git.vi.but 3 2011-01-10 13:11:48 tonk                               $:}
 
 \dd Example: $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $:
 
-\dt \c{$Revision:: 2                                                             $:}
+\dt \c{$Revision:: 3                                                             $:}
 
-\dd Example: $Revision:: 2                                                             $:
+\dd Example: $Revision:: 3                                                             $:
 
 \dt \c{$Author:: Ton Kersten <tonk@tonkersten.com>                               $:}
 
 \dd Example: $Author:: Ton Kersten <tonk@tonkersten.com>                               $:
 
-\dt \c{$Date:: 2010-12-16 13:07:31 +0100 (Thu, 16 Dec 2010)                      $:}
+\dt \c{$Date:: 2011-01-10 13:12:26 +0100 (Mon, 10 Jan 2011)                      $:}
 
-\dd Example: $Date:: 2010-12-16 13:07:31 +0100 (Thu, 16 Dec 2010)                      $:
+\dd Example: $Date:: 2011-01-10 13:12:26 +0100 (Mon, 10 Jan 2011)                      $:
 
 \dt \c{$Fname:: vmware:.../git.vi.but                                            $:}
 
@@ -76,10 +76,6 @@ automatic checkins and will mostly be used with the \cw{-m} option.
 \dt \c{$NSId$}
 
 \dd Example: $NSId$
-
-\dt \c{$[Pp]uppet.*$}
-
-\dd Example: $Puppet$
 
 This strings are the same as generated with the \cw{header} command,
 also available at this site.
