@@ -1,10 +1,10 @@
 \#{------------------------------------------------------------------------------#}
 \#{                    V e r s i o n   i n f o r m a t i o n                     #}
 \#{------------------------------------------------------------------------------#}
-\#{ $Id:: git.vi.but 3 2011-01-10 13:11:48 tonk                               $: #}
-\#{ $Revision:: 3                                                             $: #}
+\#{ $Id:: git.vi.but 4 2011-03-09 14:17:33 tonk                               $: #}
+\#{ $Revision:: 4                                                             $: #}
 \#{ $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #}
-\#{ $Date:: 2011-01-10 13:12:26 +0100 (Mon, 10 Jan 2011)                      $: #}
+\#{ $Date:: 2011-03-09 14:18:55 +0100 (Wed, 09 Mar 2011)                      $: #}
 \#{ $Hash::                                                                   $: #}
 \#{------------------------------------------------------------------------------#}
 \#{             E n d   o f   v e r s i o n   i n f o r m a t i o n              #}
@@ -49,23 +49,23 @@ automatic checkins and will mostly be used with the \cw{-m} option.
 
 \cw{git.vi} expands the following strings (Regular expressions):
 
-\dt \c{$Id:: git.vi.but 3 2011-01-10 13:11:48 tonk                               $:}
+\dt \c{$Id:: git.vi.but 4 2011-03-09 14:17:33 tonk                               $:}
 
-\dd Example: $Id: 0a5b114 2010-10-25 15:49:40 +0200 (Ton Kersten)                      $:
+\dd Example: $Id:: git.vi.but 4 2011-03-09 14:17:33 tonk                               $:
 
-\dt \c{$Revision:: 3                                                             $:}
+\dt \c{$Revision:: 4                                                             $:}
 
-\dd Example: $Revision:: 3                                                             $:
+\dd Example: $Revision:: 4                                                             $:
 
 \dt \c{$Author:: Ton Kersten <tonk@tonkersten.com>                               $:}
 
 \dd Example: $Author:: Ton Kersten <tonk@tonkersten.com>                               $:
 
-\dt \c{$Date:: 2011-01-10 13:12:26 +0100 (Mon, 10 Jan 2011)                      $:}
+\dt \c{$Date:: 2011-03-09 14:18:55 +0100 (Wed, 09 Mar 2011)                      $:}
 
-\dd Example: $Date:: 2011-01-10 13:12:26 +0100 (Mon, 10 Jan 2011)                      $:
+\dd Example: $Date:: 2011-03-09 14:18:55 +0100 (Wed, 09 Mar 2011)                      $:
 
-\dt \c{$Fname:: vmware:.../git.vi.but                                            $:}
+\dt \c{$Fname:: prutser:.../git.vi.but                                           $:}
 
 \dd Test
 
