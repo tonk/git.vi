@@ -36,4 +36,5 @@ These git config variables are used:
 	gitvi.group
 	gitvi.umask
 
-# $Id:: 3487d34 2010-10-26 11:29:10 +0200 (Ton Kersten)           $:
+# $Id:: README 1 2011-03-09 14:22:38 tonk                                   $:
+# $Revision:: 1                                                             $:
