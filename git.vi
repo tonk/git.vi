@@ -21,10 +21,10 @@
 #------------------------------------------------------------------------------#
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
-# $Id:: git.vi 48 2011-06-15 13:33:53 tonk                                  $: #
-# $Revision:: 48                                                            $: #
+# $Id:: git.vi 49 2011-06-15 13:38:20 tonk                                  $: #
+# $Revision:: 49                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2011-06-15 13:34:08 +0200 (Wed, 15 Jun 2011)                      $: #
+# $Date:: 2011-06-15 13:38:50 +0200 (Wed, 15 Jun 2011)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -366,9 +366,9 @@ do
 			datim=$(stat -c"%y" "${base}" | cut -d '.' -f1)
 
 			newrev="$(awk '/[[:space:]]*\$[R]evision::/ { print $3; exit }' "${base}")"
-			if [[ x"${newrev}" = x"\$:" ]]
+			if [[ ( x"${newrev}" = x"" ) || ( x"${newrev}" = x"\$:" ) ]]
 			then
-				# Revision tag not found. May Id will help
+				# Revision tag not found. Maybe Id will help
 				newrev="$(awk '/[[:space:]]*\$[I]d::/ { print $4; exit }' "${base}")"
 			fi
 			[[ x"${newrev}" = x"\$:" ]] && newrev=0
