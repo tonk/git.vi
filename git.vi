@@ -21,10 +21,10 @@
 #------------------------------------------------------------------------------#
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
-# $Id:: git.vi 50 2011-06-16 11:45:06 tonk                                  $: #
-# $Revision:: 50                                                            $: #
+# $Id:: git.vi 51 2011-06-16 13:29:21 tonk                                  $: #
+# $Revision:: 51                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2011-06-16 11:45:25 +0200 (Thu, 16 Jun 2011)                      $: #
+# $Date:: 2011-06-16 13:30:27 +0200 (Thu, 16 Jun 2011)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -370,7 +370,7 @@ do
 			if [[ ( x"${newrev}" = x"" ) || ( x"${newrev}" = x"\$:" ) ]]
 			then
 				# Revision tag not found. Maybe Id will help
-				newrev="$(awk '/[[:space:]]*\$[I]d::/ { print $4; exit }' "${base}")"
+				newrev="$(awk '/[[:space:]]*\$[I]d:.*\$/ { print $4; exit }' "${base}")"
 			fi
 
 			[[ x"${newrev}" = x"\$:" || x"${newrev}" = x"#" || x"${newrev}" = x"" ]] && newrev=0
