@@ -21,10 +21,10 @@
 #------------------------------------------------------------------------------#
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
-# $Id:: git.vi 49 2011-06-15 13:38:20 tonk                                  $: #
-# $Revision:: 49                                                            $: #
+# $Id:: git.vi 50 2011-06-16 11:45:06 tonk                                  $: #
+# $Revision:: 50                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2011-06-15 13:38:50 +0200 (Wed, 15 Jun 2011)                      $: #
+# $Date:: 2011-06-16 11:45:25 +0200 (Thu, 16 Jun 2011)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -361,7 +361,8 @@ do
 				( $(grep -c "[[:space:]]*\$[R]evision::.*\$:" "${base}") != 0 ) ||
 				( $(grep -c "[[:space:]]*\$[A]uthor::.*\$:"   "${base}") != 0 ) ||
 				( $(grep -c "[[:space:]]*\$[D]ate::.*\$:"     "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[F]name::.*\$:"    "${base}") != 0 ) ]]
+				( $(grep -c "[[:space:]]*\$[F]name::.*\$:"    "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[I]d:[^:].*\$"     "${base}") != 0 ) ]]
 		then
 			datim=$(stat -c"%y" "${base}" | cut -d '.' -f1)
 
@@ -371,9 +372,11 @@ do
 				# Revision tag not found. Maybe Id will help
 				newrev="$(awk '/[[:space:]]*\$[I]d::/ { print $4; exit }' "${base}")"
 			fi
-			[[ x"${newrev}" = x"\$:" ]] && newrev=0
+
+			[[ x"${newrev}" = x"\$:" || x"${newrev}" = x"#" || x"${newrev}" = x"" ]] && newrev=0
 			newrev="$(( ${newrev} + 1 ))"
 
+			id="${base##*/} ${newrev} ${datim} ${who}"
 			f="${base##*/} ${newrev} ${datim} ${who} ${spc}"
 			newrev="${newrev}${spc}"
 			nam="${author}${spc}"
@@ -394,6 +397,7 @@ do
 					-e 's!\([[:space:]]*\$[A]uthor::\).*\$:!\1 '"${nam:0:${L2}}"'\$:!'		\
 					-e 's!\([[:space:]]*\$[D]ate::\).*\$:!\1 '"${now:0:${L0}}"'\$:!'		\
 					-e 's!\([[:space:]]*\$[F]name::\).*\$:!\1 '"${GIT_FNAME:0:${L4}}"'\$:!'	\
+					-e 's!\([[:space:]]*\$[I]d:[^:]\).*\$!\1'"${id}"' \$!'					\
 			"${TMP}/${base}.bck" > "${base}"
 			rm -f "${TMP}/${base}.bck"
 		fi
