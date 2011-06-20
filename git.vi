@@ -21,10 +21,10 @@
 #------------------------------------------------------------------------------#
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
-# $Id:: git.vi 51 2011-06-16 13:29:21 tonk                                  $: #
-# $Revision:: 51                                                            $: #
+# $Id:: git.vi 52 2011-06-20 08:08:15 tonk                                  $: #
+# $Revision:: 52                                                            $: #
 # $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2011-06-16 13:30:27 +0200 (Thu, 16 Jun 2011)                      $: #
+# $Date:: 2011-06-20 08:08:23 +0200 (Mon, 20 Jun 2011)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -131,8 +131,8 @@ export TMP=${TMPDIR:-/tmp}
 #------------------------------------------------------------------------------#
 if [[ -f  ${HOME}/.gitconfig ]]
 then
-	full=$( git config -f ${HOME}/.gitconfig --get user.name)
-	email=$(git config -f ${HOME}/.gitconfig --get user.email)
+	full=$( git config --get user.name)
+	email=$(git config --get user.email)
 fi
 
 #------------------------------------------------------------------------------#
