@@ -21,10 +21,10 @@
 #------------------------------------------------------------------------------#
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
-# $Id:: git.vi 52 2011-06-20 08:08:15 tonk                                  $: #
-# $Revision:: 52                                                            $: #
-# $Author:: Ton Kersten <tonk@tonkersten.com>                               $: #
-# $Date:: 2011-06-20 08:08:23 +0200 (Mon, 20 Jun 2011)                      $: #
+# $Id:: git.vi 53 2011-06-20 08:15:52 tonk                                  $: #
+# $Revision:: 53                                                            $: #
+# $Author:: Ton Kersten <github@tonkersten.com>                             $: #
+# $Date:: 2011-06-20 08:16:01 +0200 (Mon, 20 Jun 2011)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -127,12 +127,15 @@ who=${SUDO_USER:-${LOGNAME}}
 export TMP=${TMPDIR:-/tmp}
 
 #------------------------------------------------------------------------------#
-# Try to get the user and email info from git                                  #
+# Try to get the user info from git                                            #
 #------------------------------------------------------------------------------#
+host=$(hostname -s)
 if [[ -f  ${HOME}/.gitconfig ]]
 then
 	full=$( git config --get user.name)
 	email=$(git config --get user.email)
+	host=$(git config --get user.hostname)
+	[[ x"${host}" = x"" ]] && host=$(hostname -s)
 fi
 
 #------------------------------------------------------------------------------#
@@ -300,7 +303,7 @@ do
 	# Create a nice filename                                                   #
 	#--------------------------------------------------------------------------#
 	GIT_FNAME="$(echo "$(pwd)/${base}" | sed -e "s!^${GIT_TOP}!.../!" -e "s!//!/!g")"
-	GIT_FNAME="$(hostname -s):${GIT_FNAME}"
+	GIT_FNAME="${host}:${GIT_FNAME}"
 
 	#--------------------------------------------------------------------------#
 	# Determine the filetype and comment length                                #
