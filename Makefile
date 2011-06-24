@@ -23,11 +23,17 @@ install: git.vi.1
 	install -p -m 755 git.collapse	/home/tonk/bin/git
 	install -p -m 755 git.vi.1		/home/tonk/bin/git
 	#
-	install -p -m 644 git.vi		/data/vhosts/blog/html/files/git
-	install -p -m 644 git.expand	/data/vhosts/blog/html/files/git
-	install -p -m 644 git.collapse	/data/vhosts/blog/html/files/git
-	install -p -m 644 git.vi.1		/data/vhosts/blog/html/files/git
-	install -p -m 644 README		/data/vhosts/blog/html/files/git
+	install -p -m 644 git.vi		/data/vhosts/blog/html/files/git.vi
+	install -p -m 644 git.expand	/data/vhosts/blog/html/files/git.vi
+	install -p -m 644 git.collapse	/data/vhosts/blog/html/files/git.vi
+	install -p -m 644 git.vi.1		/data/vhosts/blog/html/files/git.vi
+	install -p -m 644 README		/data/vhosts/blog/html/files/git.vi
+	#
+	install -p -m 644 git.vi		/home/tonk/tonkersten/files/git.vi
+	install -p -m 644 git.expand	/home/tonk/tonkersten/files/git.vi
+	install -p -m 644 git.collapse	/home/tonk/tonkersten/files/git.vi
+	install -p -m 644 git.vi.1		/home/tonk/tonkersten/files/git.vi
+	install -p -m 644 README		/home/tonk/tonkersten/files/git.vi
 
 git.vi.1: git.vi.but
 	halibut --man=git.vi.1 git.vi.but
