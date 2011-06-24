@@ -109,6 +109,26 @@ Usage()
 #========================== End of function "Usage" ===========================#
 
 
+#============================== Function "IsNum" ==============================#
+IsNum()
+{
+	#+-------------------------------------------------------------------------#
+	# Function     : IsNum                                                     #
+	#                                                                          #
+	# Description  : Check if a supplied parameters is numeric                 #
+	#                                                                          #
+	# Parameters   : $1 -> Parameter to check                                  #
+	#                                                                          #
+	# Returns      : RC=0: Numeric. Otherwise not numeric                      #
+	#-------------------------------------------------------------------------+#
+	case $1 in
+		"")			return 1 ;;
+		*[!0-9]*)	return 1 ;;
+		*)			return 0 ;;
+	esac
+}
+#========================== End of function "IsNum" ===========================#
+
 #------------------------------------------------------------------------------#
 # No git, no glory                                                             #
 #------------------------------------------------------------------------------#
@@ -319,6 +339,8 @@ do
 		*.js)	GIT_LEN=64	;;
 		*.pas)	GIT_LEN=64	;;
 		*.php)	GIT_LEN=64	;;
+		*.css)	GIT_LEN=64	;;
+		*.html)	GIT_LEN=60	;;
 	esac
 	export GIT_TOP GIT_LEN GIT_FNAME
 
@@ -380,7 +402,9 @@ do
 			fi
 
 			[[ x"${newrev}" = x"\$:" || x"${newrev}" = x"#" || x"${newrev}" = x"" ]] && newrev=0
+			IsNum "${newrev}" || newrev=0
 			newrev="$(( ${newrev} + 1 ))"
+
 
 			id="${base##*/} ${newrev} ${datim} ${who}"
 			f="${base##*/} ${newrev} ${datim} ${who} ${spc}"
