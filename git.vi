@@ -23,10 +23,10 @@
 #------------------------------------------------------------------------------#
 #                    V e r s i o n   i n f o r m a t i o n                     #
 #------------------------------------------------------------------------------#
-# $Id:: git.vi 55 2011-06-21 15:58:08 tonk                                  $: #
-# $Revision:: 55                                                            $: #
+# $Id:: git.vi 56 2011-09-21 14:58:02 tonk                                  $: #
+# $Revision:: 56                                                            $: #
 # $Author:: Ton Kersten <github@tonkersten.com>                             $: #
-# $Date:: 2011-06-21 15:58:09 +0200 (Tue, 21 Jun 2011)                      $: #
+# $Date:: 2011-09-21 14:59:20 +0200 (Wed, 21 Sep 2011)                      $: #
 # $Hash::                                                                   $: #
 #------------------------------------------------------------------------------#
 #             E n d   o f   v e r s i o n   i n f o r m a t i o n              #
@@ -384,18 +384,18 @@ do
 		#----------------------------------------------------------------------#
 		# Give the file a new version number (while we are at it)              #
 		#----------------------------------------------------------------------#
-		if [[	( $(grep -c "[[:space:]]*\$[I]d::.*\$:"        "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[R]evision::.*\$:"  "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[A]uthor::.*\$:"    "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[D]ate::.*\$:"      "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[F]name::.*\$:"     "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[U]RL::.*\$:"       "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[I]d:[^:].*\$"      "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[R]evision:[:].*\$" "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[A]uthor:[:].*\$"   "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[D]ate:[:].*\$"     "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[F]name:[^:].*\$"   "${base}") != 0 ) ||
-				( $(grep -c "[[:space:]]*\$[U]RL:[^:].*\$"     "${base}") != 0 ) ]]
+		if [[	( $(grep -c "[[:space:]]*\$[I]d::.*\$:"         "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[R]evision::.*\$:"   "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[A]uthor::.*\$:"     "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[D]ate::.*\$:"       "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[F]name::.*\$:"      "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[U]RL::.*\$:"        "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[I]d:[^:].*\$"       "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[R]evision:[^:].*\$" "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[A]uthor:[^:].*\$"   "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[D]ate:[^:].*\$"     "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[F]name:[^:].*\$"    "${base}") != 0 ) ||
+				( $(grep -c "[[:space:]]*\$[U]RL:[^:].*\$"      "${base}") != 0 ) ]]
 		then
 			datim=$(stat -c"%y" "${base}" | cut -d '.' -f1)
 
@@ -413,11 +413,14 @@ do
 
 			id="${base##*/} ${newrev} ${datim} ${who}"
 			f="${base##*/} ${newrev} ${datim} ${who} ${spc}"
+			newrevns="${newrev}"
 			newrev="${newrev}${spc}"
 			nam="${author}${spc}"
+			namns="${author}"
 			GIT_SHORT="${GIT_FNAME}"
 			GIT_FNAME="${GIT_FNAME}${spc}"
 			now="$(date '+%F %T %z (%a, %d %b %Y)') ${spc}"
+			nowns="$(date '+%F %T %z (%a, %d %b %Y)')"
 
 			#------------------------------------------------------------------#
 			# Prepare the header strings                                       #
@@ -434,10 +437,10 @@ do
 					-e 's!\([[:space:]]*\$[D]ate::\).*\$:!\1 '"${now:0:${L0}}"'\$:!'		\
 					-e 's!\([[:space:]]*\$[F]name::\).*\$:!\1 '"${GIT_FNAME:0:${L4}}"'\$:!'	\
 					-e 's!\([[:space:]]*\$[U]RL::\).*\$:!\1 '"${GIT_FNAME:0:${L4}}"'\$:!'	\
-					-e 's!\([[:space:]]*\$[I]d:[^:]\).*\$!\1'"${id//* }"' \$!'				\
-					-e 's!\([[:space:]]*\$[R]evision:[^:]\).*\$!\1'"${newrev//* }"' \$!'	\
-					-e 's!\([[:space:]]*\$[A]uthor:[^:]\).*\$!\1'"${nam//* }"' \$!'			\
-					-e 's!\([[:space:]]*\$[D]ate:[^:]\).*\$!\1'"${now//* }"' \$!'			\
+					-e 's!\([[:space:]]*\$[I]d:[^:]\).*\$!\1'"${id}"' \$!'				\
+					-e 's!\([[:space:]]*\$[R]evision:[^:]\).*\$!\1'"${newrevns}"' \$!'	\
+					-e 's!\([[:space:]]*\$[A]uthor:[^:]\).*\$!\1'"${namns}"' \$!'			\
+					-e 's!\([[:space:]]*\$[D]ate:[^:]\).*\$!\1'"${nowns}"' \$!'			\
 					-e 's!\([[:space:]]*\$[F]name:[^:]\).*\$!\1'"${GIT_SHORT//* }"' \$!'	\
 					-e 's!\([[:space:]]*\$[U]RL:[^:]\).*\$!\1'"${GIT_SHORT//* }"' \$!'		\
 			"${TMP}/${base}.bck" > "${base}"
