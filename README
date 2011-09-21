@@ -11,6 +11,9 @@ Options:
 	-m  All files will be committed with the same commit message.
 	    This message should be supplied on the command line.
 
+	-e  Do not edit the file(s).
+	    This is very usefull for automatic checkins
+
 This program works best when used with git filters, such as the
 'gitvi' filter.
 
@@ -36,5 +39,5 @@ These git config variables are used:
 	gitvi.group
 	gitvi.umask
 
-# $Id:: README 1 2011-03-09 14:22:38 tonk                                   $:
-# $Revision:: 1                                                             $:
+# $Id:: README 2 2011-09-21 15:44:49 tonk                                   $:
+# $Revision:: 2                                                             $:
