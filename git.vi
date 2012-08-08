@@ -231,6 +231,27 @@ shift $(( ${OPTIND} - 1 ))
 [[ x"${@:-}" = x"" ]] && Usage
 
 #------------------------------------------------------------------------------#
+# Set the editor                                                               #
+#------------------------------------------------------------------------------#
+if [[ x"${EDITOR}" = x"" ]]
+then
+	EDIT="$(type -p vi 2>/dev/null)"
+	if [[ ${?} = 0 ]]
+	then
+		EDITOR="${EDIT//* }"
+	elif [[ -x /bin/vi ]]
+	then
+		EDITOR="/bin/vi"
+	elif [[ -x /usr/bin/vi ]]
+	then
+		EDITOR="/usr/bin/vi"
+	elif [[ -x /usr/bin/vi ]]
+	then
+		EDITOR="/usr/local/bin/vi"
+	fi
+fi
+
+#------------------------------------------------------------------------------#
 # If all files should have the same commitmessage, create it now               #
 #------------------------------------------------------------------------------#
 commitfile="${TMP}/${IAM}_commit.${$}"
@@ -245,7 +266,7 @@ then
 		#
 		# Affected files: ${@}
 	@EOF
-	${EDITOR:-/usr/bin/vi} ${commitfile}
+	${EDITOR} ${commitfile}
 fi
 
 #------------------------------------------------------------------------------#
@@ -349,7 +370,7 @@ do
 	#--------------------------------------------------------------------------#
 		if [[ ${editit} = 1 ]]
 		then
-			${EDITOR:-/usr/bin/vi} "${base}"
+			${EDITOR} "${base}"
 		fi
 
 		#----------------------------------------------------------------------#
@@ -474,7 +495,7 @@ do
 					# Affected files: ${@}
 					#
 				@EOF
-				${EDITOR:-/usr/bin/vi} ${commitfile}
+				${EDITOR} ${commitfile}
 
 				cl=$(grep -v '^[[:space:]]*#' ${commitfile} | grep -v '^[[:space:]]*$' | wc -l)
 				[[ ${cl} = 0 ]] &&
